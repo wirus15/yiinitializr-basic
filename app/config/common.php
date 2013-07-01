@@ -12,7 +12,7 @@
  */
 return array(
     'basePath' => realPath(__DIR__ . '/..'),
-    'preload' => array('log', 'bootstrap'),
+    'preload' => array('log'),
     'aliases' => array(
 	'vendor' => 'application.lib.vendor',
 	'bootstrap' => 'vendor.clevertech.YiiBooster.src',
@@ -74,6 +74,7 @@ return array(
 		'<controller:\w+>/<id:\d+>' => '<controller>/view',
 		'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
 		'<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+		'<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
 	    ),
 	),
 	'user' => array(
@@ -95,6 +96,9 @@ return array(
 	'request' => array(
 	    'class' => 'application.components.HttpRequest',
 	),
+	'config' => array(
+	    'class' => 'wiro\components\config\DbConfig',
+	),
     ),
     'modules' => array(
 	'login' => array(
@@ -102,6 +106,9 @@ return array(
 	),
 	'pages' => array(
 	    'class' => 'wiro\modules\pages\PagesModule',
+	),
+	'config' => array(
+	    'class' => 'wiro\modules\config\ConfigModule',
 	),
     ),
     'params' => array(

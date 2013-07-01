@@ -1,4 +1,3 @@
-<?php $this->layout = 'admin'; ?>
 <div class="hero-unit">
     <h1>Hello, world!</h1>
 

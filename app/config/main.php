@@ -14,6 +14,7 @@ defined('APP_CONFIG_NAME') or define('APP_CONFIG_NAME', 'main');
 
 return array(
     'name' => '{APPLICATION NAME}',
+    'preload' => array('bootstrap', 'config'),
     'behaviors' => array(),
     'controllerMap' => array(),
     'modules' => array(
