@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * common.php configuration file
@@ -10,41 +11,101 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 return array(
-	'basePath' => realPath(__DIR__ . '/..'),
-	'preload' => array('log'),
-	'aliases' => array(
-		'vendor' => 'application.vendor'
+    'basePath' => realPath(__DIR__ . '/..'),
+    'preload' => array('log', 'bootstrap'),
+    'aliases' => array(
+	'vendor' => 'application.lib.vendor',
+	'bootstrap' => 'vendor.clevertech.YiiBooster.src',
+	'wiro' => 'vendor.wirus15.yii-wiro',
+    ),
+    'import' => array(
+	'application.controllers.*',
+	'application.helpers.*',
+	'application.models.*',
+	'bootstrap.helpers.*',
+	'wiro.helpers.*',
+    ),
+    'components' => array(
+	'bootstrap' => array(
+	    'class' => 'bootstrap.components.Bootstrap',
 	),
-	'import' => array(
-		'application.controllers.*',
-		'application.extensions.components.*',
-		'application.extensions.behaviors.*',
-		'application.helpers.*',
-		'application.models.*',
-		'vendor.2amigos.yiistrap.helpers.*',
-		'vendor.2amigos.yiiwheels.helpers.*',
+	'db' => array(
+	    'tablePrefix' => 'tbl_',
+	    'connectionString' => 'sqlite:' . dirname(__FILE__) . '/../data/main.db',
 	),
-	'components' => array(
-		'db'=>array(
-			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		),
-		'errorHandler' => array(
-			'errorAction' => 'site/error',
-		),
-		'log' => array(
-			'class'  => 'CLogRouter',
-			'routes' => array(
-				array(
-					'class'        => 'CFileLogRoute',
-					'levels'       => 'error, warning',
-				),
-			),
-		),
+	'messages' => array(
+	    'class' => 'wiro\components\PhpMessageSource',
+	    'sourcePaths' => array(
+		'wiro' => 'wiro.messages',
+	    ),
 	),
-	'params' => array(
-
-		// php configuration
-		'php.defaultCharset' => 'utf-8',
-		'php.timezone'       => 'UTC',
-	)
+	'clientScript' => array(
+	    'packages' => require(__DIR__ . '/../lib/vendor/wirus15/yii-wiro/assets/packages.php'),
+	),  
+	'format' => array(
+	    'class' => 'wiro\components\Formatter',
+	),
+	'upload' => array(
+	    'class' => 'wiro\components\UploadManager',
+	),
+	'thumb' => array(
+	    'class' => 'wiro\components\image\ThumbnailCreator',
+	),
+	'less' => array(
+	    'class' => 'wiro\components\less\LessCompiler',
+	),
+	'mail' => array(
+	    'class' => 'wiro\components\mail\YiiMail',
+	    'transportType' => 'php',
+	    'dryRun' => false,
+	    'transportOptions' => array(
+		'host' => '',
+		'username' => '',
+		'password' => '',
+		'port' => '465',
+		'encryption' => 'ssl',
+	    ),
+	),
+	'urlManager' => array(
+	    'urlFormat' => 'path',
+	    'showScriptName' => false,
+	    'urlSuffix' => '.html',
+	    'rules' => array(
+		'<controller:\w+>/<id:\d+>' => '<controller>/view',
+		'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+		'<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+	    ),
+	),
+	'user' => array(
+	    'allowAutoLogin' => true,
+	    'loginUrl' => array('/login/default/login'),
+	),
+	'errorHandler' => array(
+	    'errorAction' => 'site/error',
+	),
+	'log' => array(
+	    'class' => 'CLogRouter',
+	    'routes' => array(
+		array(
+		    'class' => 'CFileLogRoute',
+		    'levels' => 'error, warning',
+		),
+	    ),
+	),
+	'request' => array(
+	    'class' => 'application.components.HttpRequest',
+	),
+    ),
+    'modules' => array(
+	'login' => array(
+	    'class' => 'wiro\modules\login\SimpleLoginModule',
+	),
+	'pages' => array(
+	    'class' => 'wiro\modules\pages\PagesModule',
+	),
+    ),
+    'params' => array(
+	'php.defaultCharset' => 'utf-8',
+	'php.timezone' => 'UTC',
+    )
 );

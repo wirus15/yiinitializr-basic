@@ -6,7 +6,7 @@
     "type": "yii-application",
     "license": "BSD-3-Clause",
     "description": "description_text",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "config": {
         "vendor-dir": "app/lib/vendor"
     },
@@ -23,16 +23,30 @@
         }
     ],
     "repositories": [
+	{
+	    "type": "vcs",
+	    "url": "https://github.com/wirus15/yii"
+	},
+	{
+	    "type": "vcs",
+	    "url": "https://github.com/wirus15/yii-wiro"
+	},
+	{
+	    "type": "vcs",
+	    "url": "https://github.com/wirus15/PHPThumb"
+	},
+	{
+	    "type": "vcs",
+	    "url": "https://github.com/wirus15/YiiBooster"
+	},
         {
             "type": "composer",
             "url": "http://packages.phundament.com"
         }
     ],
     "require": {
-        "yiisoft/yii": "dev-master",
-        "2amigos/yiistrap": "dev-master",
-        "2amigos/yiiwheels": "dev-master"
-
+        "wirus15/yii-wiro": "dev-master",
+	"yiisoft/yii": "dev-master"
     },
     "autoload": {
         "psr-0": {

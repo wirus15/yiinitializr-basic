@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * test.php configuration file
@@ -10,7 +11,7 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 return array(
-	'params' => array(
-		'yii.handleErrors'   => false,
-	)
+    'params' => array(
+	'yii.handleErrors' => false,
+    )
 );

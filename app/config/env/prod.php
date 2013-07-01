@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @author Antonio Ramirez <amigo.cobos@gmail.com>
@@ -8,7 +9,7 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 return array(
-	'components' => array(
+    'components' => array(
 //		configure to suit your needs
 //		'db' => array(
 //			'connectionString' => '{DB_CONNECTION}',
@@ -18,10 +19,10 @@ return array(
 //			'enableParamLogging' => YII_DEBUG,
 //			'charset' => 'utf8',
 //		),
-	),
-	'params' => array(
-		'yii.debug' => false,
-		'yii.traceLevel' => 0,
-		'yii.handleErrors'   => APP_CONFIG_NAME !== 'test',
-	)
+    ),
+    'params' => array(
+	'yii.debug' => false,
+	'yii.traceLevel' => 0,
+	'yii.handleErrors' => APP_CONFIG_NAME !== 'test',
+    )
 );

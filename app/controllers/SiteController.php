@@ -1,4 +1,7 @@
 <?php
+
+use wiro\base\Controller;
+
 /**
  *
  * SiteController class
@@ -9,24 +12,18 @@
  * @copyright 2013 2amigOS! Consultation Group LLC
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
-class SiteController extends EController
+class SiteController extends Controller
 {
-	public function actionIndex()
-	{
-		$this->render('index');
-	}
-
-	/**
-	 * This is the action to handle external exceptions.
-	 */
-	public function actionError()
-	{
-		if($error=Yii::app()->errorHandler->error)
-		{
-			if(Yii::app()->request->isAjaxRequest)
-				echo $error['message'];
-			else
-				$this->render('error', $error);
-		}
-	}
+    public function actions()
+    {
+	return array(
+	    'error' => 'wiro\actions\ErrorAction',
+	    'page' => 'wiro\modules\pages\actions\ViewAction',
+	);
+    }
+    
+    public function actionIndex()
+    {
+	$this->render('index');
+    }
 }
