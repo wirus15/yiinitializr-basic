@@ -30,7 +30,7 @@ index
 
 # env files and testdrive database
 /app/config/env.php
-/app/data/testdrive.db
+/app/data/main.db
 
 # composer
 /app/lib/vendor
