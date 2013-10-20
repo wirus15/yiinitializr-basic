@@ -12,6 +12,6 @@
  */
 return array(
     'params' => array(
-	'yii.handleErrors' => false,
+        'yii.handleErrors' => false,
     )
 );

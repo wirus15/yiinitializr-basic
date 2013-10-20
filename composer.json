@@ -26,22 +26,22 @@
         }
     ],
     "repositories": [
-	{
-	    "type": "vcs",
-	    "url": "https://github.com/wirus15/yii"
-	},
-	{
-	    "type": "vcs",
-	    "url": "https://github.com/wirus15/yii-wiro"
-	},
-	{
-	    "type": "vcs",
-	    "url": "https://github.com/wirus15/PHPThumb"
-	},
-	{
-	    "type": "vcs",
-	    "url": "https://github.com/clevertech/YiiBooster"
-	},
+        {
+            "type": "vcs",
+            "url": "https://github.com/wirus15/yii"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/wirus15/yii-wiro"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/wirus15/PHPThumb"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/clevertech/YiiBooster"
+        },
         {
             "type": "composer",
             "url": "http://packages.phundament.com"
@@ -49,7 +49,7 @@
     ],
     "require": {
         "wirus15/yii-wiro": "dev-master",
-	"yiisoft/yii": "dev-master"
+        "yiisoft/yii": "dev-master"
     },
     "autoload": {
         "psr-0": {

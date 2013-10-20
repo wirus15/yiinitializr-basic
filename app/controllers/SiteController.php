@@ -14,16 +14,17 @@ use wiro\base\Controller;
  */
 class SiteController extends Controller
 {
+
     public function actions()
     {
-	return array(
-	    'error' => 'wiro\actions\ErrorAction',
-	    'page' => 'wiro\modules\pages\actions\ViewAction',
-	);
+        return array(
+            'error' => 'wiro\actions\ErrorAction',
+            'page' => 'wiro\modules\pages\actions\ViewAction',
+        );
     }
-    
+
     public function actionIndex()
     {
-	$this->render('index');
+        $this->render('index');
     }
 }

@@ -17,14 +17,6 @@ return array(
         ),
     ),
     'components' => array(
-        /*'db' => array(
-            'connectionString' => 'mysql:host=localhost;port=3306;dbname=',
-            'username' => '',
-            'password' => '',
-            'enableProfiling' => true,
-            'enableParamLogging' => true,
-            'charset' => 'utf8',
-        ),*/
         'mail' => array(
             'dryRun' => true,
         ),

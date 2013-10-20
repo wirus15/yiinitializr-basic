@@ -29,6 +29,10 @@ class InstallCommand extends CConsoleCommand
     
     private function updateConfigFile($file)
     {
+        if(!Console::confirm('Update configuration files?')) {
+            return;
+        }
+        
         $variables = array(
             array('APPLICATION_NAME', 'Application name', array('required'=>true)), 
             array('ADMIN_EMAIL', 'Administrator\'s email', array('required'=>true, 'pattern'=>'/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/')),
