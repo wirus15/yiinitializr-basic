@@ -1,25 +1,6 @@
-<?php
-/**
- *
- * main.php layout
- *
- * @author Antonio Ramirez <amigo.cobos@gmail.com>
- * @link http://www.ramirezcobos.com/
- * @link http://www.2amigos.us/
- * @copyright 2013 2amigOS! Consultation Group LLC
- * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- */
-?>
 <!DOCTYPE html>
-<!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>
-<html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
 
-<html class="no-js"> <!--<![endif]-->
+<html class="no-js">
     <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -33,35 +14,52 @@
 	<div id="wrap">
 	    <div class="container-fluid">
 		<nav id="main-menu">
-		    <? $this->widget('bootstrap.widgets.TbNavbar', array(
+		    <?php $this->widget('bootstrap.widgets.TbNavbar', array(
 			'brand' => Yii::app()->name,
-			'fixed' => false,
+			'fixed' => 'top',
 			'items' => array(
+                            array(
+				'class' => 'bootstrap.widgets.TbMenu',
+				'items' => array(
+				    array(
+					'label' => 'Users', 
+					'url' => array('/user/admin'), 
+					'visible' => !Yii::app()->user->isGuest,
+					'icon' => 'group',
+				    ),
+				),
+			    ),
 			    array(
 				'class' => 'bootstrap.widgets.TbMenu',
 				'htmlOptions' => array('class' => 'pull-right'),
 				'items' => array(
 				    array(
-					'label' => 'Zaloguj', 
-					'url' => array('/login/default/login'), 
+					'label' => 'Sign in', 
+					'url' => array('/user/login/login'), 
 					'visible' => Yii::app()->user->isGuest,
-					'icon' => TbHtml::ICON_USER,
+					'icon' => 'signin',
 				    ),
 				    array(
-					'label' => 'Wyloguj', 
-					'url' => array('/login/default/logout'), 
+					'label' => 'Sign out', 
+					'url' => array('/user/login/logout'), 
 					'visible' => !Yii::app()->user->isGuest,
-					'icon' => TbHtml::ICON_OFF,
+					'icon' => 'off',
 				    ),
 				),
 			    ),
 			),
 		    )); ?>
 		</nav>
-		<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
-		    'links'=>$this->breadcrumbs,
-		)); ?>
-		<?= $content; ?>
+                
+                <section id="page">
+                    <nav id="breadcrumbs">
+                    <?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+                        'links'=>$this->breadcrumbs,
+                    )); ?>
+                    </nav>
+                
+                    <?= $content; ?>
+                </section>
 	    </div>
 	    <div id="push"></div>
 	</div>

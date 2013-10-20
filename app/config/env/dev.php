@@ -10,26 +10,28 @@
  */
 return array(
     'modules' => array(
-	'gii' => array(
-	    'class' => 'system.gii.GiiModule',
-	    'password' => 'yii',
-	    'ipFilters' => array('127.0.0.1', '::1'),
-	),
+        'gii' => array(
+            'class' => 'system.gii.GiiModule',
+            'password' => 'yii',
+            'ipFilters' => array('127.0.0.1', '::1'),
+        ),
     ),
     'components' => array(
-//		modify to suit your needs
-//		'db' => array(
-//			'connectionString' => '{CONNECTION_STRING}',
-//			'username' => '{USERNAME}',
-//			'password' => '{PASSWORD}',
-//			'enableProfiling' => true,
-//			'enableParamLogging' => true,
-//			'charset' => 'utf8',
-//		),
+        /*'db' => array(
+            'connectionString' => 'mysql:host=localhost;port=3306;dbname=',
+            'username' => '',
+            'password' => '',
+            'enableProfiling' => true,
+            'enableParamLogging' => true,
+            'charset' => 'utf8',
+        ),*/
+        'mail' => array(
+            'dryRun' => true,
+        ),
     ),
     'params' => array(
-	'yii.handleErrors' => true,
-	'yii.debug' => true,
-	'yii.traceLevel' => 3,
+        'yii.handleErrors' => true,
+        'yii.debug' => true,
+        'yii.traceLevel' => 3,
     )
 );

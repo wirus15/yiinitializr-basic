@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Custom console.php config file.
  *
@@ -18,13 +19,12 @@ require_once dirname(__FILE__) . '/../Helpers/ArrayX.php';
  * Return the configuration array appending composer callback methods
  */
 return Yiinitializr\Helpers\ArrayX::merge(
-	Yiinitializr\Helpers\Initializer::config('console', array('common', 'env', 'local')),
-	array(
-		'params' => array(
-			'composer.callbacks' => array(
-				'post-update' => array('yiic', 'migrate'),
-				'post-install' => array('yiic', 'migrate'),
-			)
-		),
-	)
+    Yiinitializr\Helpers\Initializer::config('console', array('common', 'env', 'local')), array(
+        'params' => array(
+            'composer.callbacks' => array(
+                'post-update' => array('yiic migrate'),
+                'post-install' => array('yiic help', 'yiic migrate'),
+            )
+        ),
+    )
 );

@@ -11,78 +11,55 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 return array(
-    'basePath' => realPath(__DIR__ . '/..'),
-    'preload' => array('log'),
+    'basePath' => realpath(__DIR__ . '/..'),
     'aliases' => array(
 	'vendor' => 'application.lib.vendor',
-	'bootstrap' => 'vendor.clevertech.YiiBooster.src',
 	'wiro' => 'vendor.wirus15.yii-wiro',
+        'HASH' => 'wiro.components.hash',
+        'bootstrap' => 'vendor.clevertech.yiibooster.src',
     ),
     'import' => array(
 	'application.controllers.*',
 	'application.helpers.*',
 	'application.models.*',
-	'bootstrap.helpers.*',
 	'wiro.helpers.*',
     ),
+    'preload' => array('log'),
     'components' => array(
-	'bootstrap' => array(
-	    'class' => 'bootstrap.components.Bootstrap',
-	),
 	'db' => array(
 	    'tablePrefix' => 'tbl_',
 	    'connectionString' => 'sqlite:' . dirname(__FILE__) . '/../data/main.db',
+            /*'connectionString' => 'mysql:host=localhost;port=3306;dbname=',
+            'username' => '',
+            'password' => '',
+            'enableProfiling' => true,
+            'enableParamLogging' => true,
+            'charset' => 'utf8',
+            */
 	),
 	'messages' => array(
 	    'class' => 'wiro\components\PhpMessageSource',
 	    'sourcePaths' => array(
 		'wiro' => 'wiro.messages',
 	    ),
-	),
-	'clientScript' => array(
-	    'packages' => require(__DIR__ . '/../lib/vendor/wirus15/yii-wiro/assets/packages.php'),
 	),  
 	'format' => array(
 	    'class' => 'wiro\components\Formatter',
-	),
-	'upload' => array(
-	    'class' => 'wiro\components\UploadManager',
-	),
-	'thumb' => array(
-	    'class' => 'wiro\components\image\ThumbnailCreator',
-	),
-	'less' => array(
-	    'class' => 'wiro\components\less\LessCompiler',
 	),
 	'mail' => array(
 	    'class' => 'wiro\components\mail\YiiMail',
 	    'transportType' => 'php',
 	    'dryRun' => false,
-	    'transportOptions' => array(
+	    /*'transportOptions' => array(
 		'host' => '',
 		'username' => '',
 		'password' => '',
 		'port' => '465',
 		'encryption' => 'ssl',
-	    ),
-	),
-	'urlManager' => array(
-	    'urlFormat' => 'path',
-	    'showScriptName' => false,
-	    'urlSuffix' => '.html',
-	    'rules' => array(
-		'<controller:\w+>/<id:\d+>' => '<controller>/view',
-		'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
-		'<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-		'<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
-	    ),
+	    ),*/
 	),
 	'user' => array(
-	    'allowAutoLogin' => true,
-	    'loginUrl' => array('/login/default/login'),
-	),
-	'errorHandler' => array(
-	    'errorAction' => 'site/error',
+            'class' => 'wiro\modules\users\components\WebUser',
 	),
 	'log' => array(
 	    'class' => 'CLogRouter',
@@ -93,25 +70,33 @@ return array(
 		),
 	    ),
 	),
-	'request' => array(
-	    'class' => 'application.components.HttpRequest',
-	),
 	'config' => array(
 	    'class' => 'wiro\components\config\DbConfig',
 	),
-    ),
-    'modules' => array(
-	'login' => array(
-	    'class' => 'wiro\modules\login\SimpleLoginModule',
+        'authManager' => array(
+	    'class' => 'CDbAuthManager',
+	    'itemTable' => '{{authitem}}',
+	    'assignmentTable' => '{{authassignment}}',
+	    'itemChildTable' => '{{authitemchild}}',
+	    'defaultRoles' => array('user', 'guest'),
+	    'behaviors' => array(
+		'auth' => array(
+		    'class' => 'wiro.modules.auth.components.AuthBehavior',
+		),
+	    ),
 	),
-	'pages' => array(
-	    'class' => 'wiro\modules\pages\PagesModule',
-	),
-	'config' => array(
-	    'class' => 'wiro\modules\config\ConfigModule',
-	),
+        'hash' => array(
+            'class' => 'HASH\adapters\Yii_Hash',
+            'strategies' => array(
+                'pass' => array(
+                    'strategy' => 17,
+                    'cost' => 12,
+                ),
+            ),
+        ),
     ),
     'params' => array(
+        'adminEmail' => 'admin@localhost',
 	'php.defaultCharset' => 'utf-8',
 	'php.timezone' => 'UTC',
     )

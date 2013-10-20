@@ -1,15 +1,16 @@
 html,
 body {
     height: 100%;
-    /* The html and body elements cannot have any padding or margin. */
+    padding: 0px;
+    margin: 0px;
 }
 
 form {
     margin-bottom: 0px;
 }
 
-#main-menu {
-    margin-top: 20px;
+#page {
+    margin-top: 60px;
 }
 
 .hidden {
@@ -24,7 +25,6 @@ form {
     min-height: 100%;
     height: auto !important;
     height: 100%;
-    /* Negative indent footer by it's height */
     margin: 0px auto -60px;
 }
 
@@ -56,49 +56,8 @@ form {
     margin: 100px auto 20px;
 }
 
-.form-signin input[type="password"] {
-    margin-bottom: 0px;
-}
-
 .form-signin fieldset {
     margin-bottom: 20px;
-}
-
-.grid-view .button-column .dropdown-menu {
-    text-align: left;
-}
-
-.pull-right .dropdown-menu:after {
-    left: auto;
-    right: 13px;
-}
-.pull-right .dropdown-menu {
-    left: auto;
-    right: 0;
-}
-
-.button-column.pull-right {
-    padding-right: 9px;
-}
-
-.modal-small {
-    width: 320px;
-    margin-left: -160px;
-}
-
-.modal-mini {
-    width: 220px;
-    margin-left: -110px;
-}
-
-.modal-large {
-    width: 700px;
-    margin-left: -350px;
-}
-
-.modal-xlarge {
-    width: 900px;
-    margin-left: -450px;
 }
 
 .deleted {
@@ -185,5 +144,21 @@ img.image-select {
 }
 
 i[class^="icon-"] {
+    text-decoration: none;
+}
+
+.button-column i[class^="icon-"] {
     color: #333;
+}
+
+.button-column i[class^="icon-"]:hover {
+    color: #666;
+}
+
+.grid-view table thead a {
+    text-decoration: none;
+}
+
+.grid-view table thead span.icon-sort-down {
+    margin-top: -5px;
 }

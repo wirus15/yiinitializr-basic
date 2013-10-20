@@ -148,9 +148,13 @@ class Callback
 
 		if (isset($app->params['composer.callbacks'][$name]))
 		{
-			$args = $app->params['composer.callbacks'][$name];
+                    $commands = $app->params['composer.callbacks'][$name];
+                    foreach($commands as $command) {
+                        echo "running: $command\n";
+                        $args = explode(' ', $command);
 			$app->commandRunner->addCommands(\Yii::getPathOfAlias('system.cli.commands'));
 			$app->commandRunner->run($args);
+                    }
 		}
 	}
 
