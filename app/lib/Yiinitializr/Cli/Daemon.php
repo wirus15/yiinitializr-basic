@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Daemon class file.
  *
@@ -10,7 +11,9 @@
  * @copyright 2013 2amigOS! Consultation Group LLC
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
+
 namespace Yiinitializr\Cli;
+
 /**
  * Daemon  provides helpers for starting and killing daemonized processes
  *
@@ -20,144 +23,146 @@ namespace Yiinitializr\Cli;
  */
 class Daemon
 {
-	/**
-	 * Daemonize a Closure object.
-	 * @param array $options Set of options
-	 * @param callable $callable Closure object to daemonize
-	 * @return bool True on success
-	 * @throws \Exception
-	 */
-	public static function work(array $options, \Closure $callable)
-	{
-		if (!extension_loaded('pcntl')) {
-			throw new \Exception('pcntl extension required');
-		}
 
-		if (!extension_loaded('posix')) {
-			throw new \Exception('posix extension required');
-		}
+    /**
+     * Daemonize a Closure object.
+     * @param array $options Set of options
+     * @param callable $callable Closure object to daemonize
+     * @return bool True on success
+     * @throws \Exception
+     */
+    public static function work(array $options, \Closure $callable)
+    {
+        if (!extension_loaded('pcntl')) {
+            throw new \Exception('pcntl extension required');
+        }
 
-		if (!isset($options['pid'])) {
-			throw new \Exception('pid not specified');
-		}
+        if (!extension_loaded('posix')) {
+            throw new \Exception('posix extension required');
+        }
 
-		$options = $options + array(
-			'stdin'  => '/dev/null',
-			'stdout' => '/dev/null',
-			'stderr' => 'php://stdout',
-		);
+        if (!isset($options['pid'])) {
+            throw new \Exception('pid not specified');
+        }
 
-		if (($lock = @fopen($options['pid'], 'c+')) === false) {
-			throw new \Exception('unable to open pid file ' . $options['pid']);
-		}
+        $options = $options + array(
+            'stdin' => '/dev/null',
+            'stdout' => '/dev/null',
+            'stderr' => 'php://stdout',
+        );
 
-		if (!flock($lock, LOCK_EX | LOCK_NB)) {
-			throw new \Exception('could not acquire lock for ' . $options['pid']);
-		}
+        if (($lock = @fopen($options['pid'], 'c+')) === false) {
+            throw new \Exception('unable to open pid file ' . $options['pid']);
+        }
 
-		switch ($pid = pcntl_fork()) {
-			case -1:
-				throw new \Exception('unable to fork');
-			case 0:
-				break;
-			default:
-				fseek($lock, 0);
-				ftruncate($lock, 0);
-				fwrite($lock ,$pid);
-				fflush($lock);
-				return true;
-		}
+        if (!flock($lock, LOCK_EX | LOCK_NB)) {
+            throw new \Exception('could not acquire lock for ' . $options['pid']);
+        }
 
-		if (posix_setsid() === -1) {
-			throw new \Exception('failed to setsid');
-		}
+        switch ($pid = pcntl_fork()) {
+            case -1:
+                throw new \Exception('unable to fork');
+            case 0:
+                break;
+            default:
+                fseek($lock, 0);
+                ftruncate($lock, 0);
+                fwrite($lock, $pid);
+                fflush($lock);
+                return true;
+        }
 
-		fclose(STDIN);
-		fclose(STDOUT);
-		fclose(STDERR);
+        if (posix_setsid() === -1) {
+            throw new \Exception('failed to setsid');
+        }
 
-		if (!($stdin  = fopen($options['stdin'], 'r'))) {
-			throw new \Exception('failed to open STDIN ' . $options['stdin']);
-		}
+        fclose(STDIN);
+        fclose(STDOUT);
+        fclose(STDERR);
 
-		if (!($stdout = fopen($options['stdout'], 'w'))) {
-			throw new \Exception('failed to open STDOUT ' . $options['stdout']);
-		}
+        if (!($stdin = fopen($options['stdin'], 'r'))) {
+            throw new \Exception('failed to open STDIN ' . $options['stdin']);
+        }
 
-		if (!($stderr = fopen($options['stderr'], 'w'))) {
-			throw new \Exception('failed to open STDERR ' . $options['stderr']);
-		}
+        if (!($stdout = fopen($options['stdout'], 'w'))) {
+            throw new \Exception('failed to open STDOUT ' . $options['stdout']);
+        }
 
-		pcntl_signal(SIGTSTP, SIG_IGN);
-		pcntl_signal(SIGTTOU, SIG_IGN);
-		pcntl_signal(SIGTTIN, SIG_IGN);
-		pcntl_signal(SIGHUP,  SIG_IGN);
+        if (!($stderr = fopen($options['stderr'], 'w'))) {
+            throw new \Exception('failed to open STDERR ' . $options['stderr']);
+        }
 
-		call_user_func($callable, $stdin, $stdout, $stderr);
-	}
+        pcntl_signal(SIGTSTP, SIG_IGN);
+        pcntl_signal(SIGTTOU, SIG_IGN);
+        pcntl_signal(SIGTTIN, SIG_IGN);
+        pcntl_signal(SIGHUP, SIG_IGN);
 
-	/**
-	 * Whether a process is running or not
-	 * @param $file
-	 * @return bool
-	 * @throws \Exception
-	 */
-	public static function isRunning($file)
-	{
-		if (!extension_loaded('posix')) {
-			throw new \Exception('posix extension required');
-		}
+        call_user_func($callable, $stdin, $stdout, $stderr);
+    }
 
-		if (!is_readable($file)) {
-			return false;
-		}
+    /**
+     * Whether a process is running or not
+     * @param $file
+     * @return bool
+     * @throws \Exception
+     */
+    public static function isRunning($file)
+    {
+        if (!extension_loaded('posix')) {
+            throw new \Exception('posix extension required');
+        }
 
-		if (($lock = @fopen($file, 'c+')) === false) {
-			throw new \Exception('unable to open pid file ' . $file);
-		}
+        if (!is_readable($file)) {
+            return false;
+        }
 
-		if (flock($lock, LOCK_EX | LOCK_NB)) {
-			return false;
-		} else {
-			flock($lock, LOCK_UN);
-			return true;
-		}
-	}
+        if (($lock = @fopen($file, 'c+')) === false) {
+            throw new \Exception('unable to open pid file ' . $file);
+        }
 
-	/**
-	 * Kills a daemon process specified by its PID file.
-	 *
-	 * @param $file  Daemon PID file
-	 * @param bool $delete Flag to delete PID file after killing
-	 * @return bool  True on success, false otherwise
-	 * @throws \Exception
-	 */
-	public static function kill($file, $delete = false)
-	{
-		if (!extension_loaded('posix')) {
-			throw new \Exception('posix extension required');
-		}
+        if (flock($lock, LOCK_EX | LOCK_NB)) {
+            return false;
+        } else {
+            flock($lock, LOCK_UN);
+            return true;
+        }
+    }
 
-		if (!is_readable($file)) {
-			throw new \Exception('unreadable pid file ' . $file);
-		}
+    /**
+     * Kills a daemon process specified by its PID file.
+     *
+     * @param $file  Daemon PID file
+     * @param bool $delete Flag to delete PID file after killing
+     * @return bool  True on success, false otherwise
+     * @throws \Exception
+     */
+    public static function kill($file, $delete = false)
+    {
+        if (!extension_loaded('posix')) {
+            throw new \Exception('posix extension required');
+        }
 
-		if (($lock = @fopen($file, 'c+')) === false) {
-			throw new \Exception('unable to open pid file ' . $file);
-		}
+        if (!is_readable($file)) {
+            throw new \Exception('unreadable pid file ' . $file);
+        }
 
-		if (flock($lock, LOCK_EX | LOCK_NB)) {
-			flock($lock, LOCK_UN);
-			throw new \Exception('process not running');
-		}
+        if (($lock = @fopen($file, 'c+')) === false) {
+            throw new \Exception('unable to open pid file ' . $file);
+        }
 
-		$pid = fgets($lock);
+        if (flock($lock, LOCK_EX | LOCK_NB)) {
+            flock($lock, LOCK_UN);
+            throw new \Exception('process not running');
+        }
 
-		if (posix_kill($pid, SIGTERM)) {
-			if ($delete) unlink($file);
-			return true;
-		} else {
-			return false;
-		}
-	}
+        $pid = fgets($lock);
+
+        if (posix_kill($pid, SIGTERM)) {
+            if ($delete)
+                unlink($file);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Yiinitialzr\Composer\Callback provides composer hooks
  *
@@ -50,6 +51,7 @@
  * @copyright Copyright &copy; 2012 diemeisterei GmbH
  * @license http://www.phundament.com/license
  */
+
 namespace Yiinitializr\Composer;
 
 use Composer\Script\Event;
@@ -59,147 +61,142 @@ use Yiinitializr\Cli\Console;
 
 class Callback
 {
-	/**
-	 * Displays welcome message
-	 * @static
-	 * @param \Composer\Script\Event $event
-	 */
-	public static function preInstall(Event $event)
-	{
-		Console::output("\n%BYiinitialzr 1.0.1%n\n");
-		Console::output("* download packages specified in composer.json");
-		Console::output("* configures your runtime folders");
-		Console::output("* triggers composer callbacks (yiic commands)\n");
 
-		if (Console::confirm("Start Installation?"))
-			self::runHook('pre-install');
-		else
-			exit("\n%RInstallation aborted%n.\n");
-	}
+    /**
+     * Displays welcome message
+     * @static
+     * @param \Composer\Script\Event $event
+     */
+    public static function preInstall(Event $event)
+    {
+        Console::output("\n%BYiinitialzr 1.0.1%n\n");
+        Console::output("* download packages specified in composer.json");
+        Console::output("* configures your runtime folders");
+        Console::output("* triggers composer callbacks (yiic commands)\n");
 
-	/**
-	 * Executes a post-install callback
-	 * @static
-	 * @param \Composer\Script\Event $event
-	 */
-	public static function postInstall(Event $event)
-	{
-		self::runHook('post-install');
-		Console::output("\n%GInstallation completed!%n\n");
-	}
+        if (Console::confirm("Start Installation?"))
+            self::runHook('pre-install');
+        else
+            exit("\n%RInstallation aborted%n.\n");
+    }
 
-	/**
-	 * Displays updating message
-	 *
-	 * @static
-	 * @param \Composer\Script\Event $event
-	 */
-	public static function preUpdate(Event $event)
-	{
-		Console::output("Updating your application to the latest available packages...");
-		self::runHook('pre-update');
-	}
+    /**
+     * Executes a post-install callback
+     * @static
+     * @param \Composer\Script\Event $event
+     */
+    public static function postInstall(Event $event)
+    {
+        self::runHook('post-install');
+        Console::output("\n%GInstallation completed!%n\n");
+    }
 
-	/**
-	 * Executes post-update message
-	 *
-	 * @static
-	 * @param \Composer\Script\Event $event
-	 */
-	public static function postUpdate(Event $event)
-	{
-		self::runHook('post-update');
-		Console::output("%GUpdate completed.%n");
-	}
+    /**
+     * Displays updating message
+     *
+     * @static
+     * @param \Composer\Script\Event $event
+     */
+    public static function preUpdate(Event $event)
+    {
+        Console::output("Updating your application to the latest available packages...");
+        self::runHook('pre-update');
+    }
 
-	/**
-	 * Executes ./yiic <vendor/<packageName>-<action>
-	 *
-	 * @static
-	 * @param \Composer\Script\Event $event
-	 */
-	public static function postPackageInstall(Event $event)
-	{
-		$installedPackage = $event->getOperation()->getPackage();
-		$hookName = $installedPackage->getPrettyName() . '-install';
-		self::runHook($hookName);
-	}
+    /**
+     * Executes post-update message
+     *
+     * @static
+     * @param \Composer\Script\Event $event
+     */
+    public static function postUpdate(Event $event)
+    {
+        self::runHook('post-update');
+        Console::output("%GUpdate completed.%n");
+    }
 
-	/**
-	 * Executes ./yiic <vendor/<packageName>-<action>
-	 *
-	 * @static
-	 * @param \Composer\Script\Event $event
-	 */
-	public static function postPackageUpdate(Event $event)
-	{
-		$installedPackage = $event->getOperation()->getTargetPackage();
-		$commandName = $installedPackage->getPrettyName() . '-update';
-		self::runHook($commandName);
-	}
+    /**
+     * Executes ./yiic <vendor/<packageName>-<action>
+     *
+     * @static
+     * @param \Composer\Script\Event $event
+     */
+    public static function postPackageInstall(Event $event)
+    {
+        $installedPackage = $event->getOperation()->getPackage();
+        $hookName = $installedPackage->getPrettyName() . '-install';
+        self::runHook($hookName);
+    }
 
-	/**
-	 * Runs Yii command, if available (defined in config.php)
-	 */
-	private static function runHook($name)
-	{
-		$app = self::getYiiApplication();
-		if ($app === null) return;
+    /**
+     * Executes ./yiic <vendor/<packageName>-<action>
+     *
+     * @static
+     * @param \Composer\Script\Event $event
+     */
+    public static function postPackageUpdate(Event $event)
+    {
+        $installedPackage = $event->getOperation()->getTargetPackage();
+        $commandName = $installedPackage->getPrettyName() . '-update';
+        self::runHook($commandName);
+    }
 
-		if (isset($app->params['composer.callbacks'][$name]))
-		{
-                    $commands = $app->params['composer.callbacks'][$name];
-                    foreach($commands as $command) {
-                        echo "running: $command\n";
-                        $args = explode(' ', $command);
-			$app->commandRunner->addCommands(\Yii::getPathOfAlias('system.cli.commands'));
-			$app->commandRunner->run($args);
-                    }
-		}
-	}
+    /**
+     * Runs Yii command, if available (defined in config.php)
+     */
+    private static function runHook($name)
+    {
+        $app = self::getYiiApplication();
+        if ($app === null)
+            return;
 
-	/**
-	 * Creates console application, if Yii is available
-	 */
-	private static function getYiiApplication()
-	{
-		if (!is_file(Config::value('yii.path') . '/yii.php'))
-		{
-			// nothing yet installed, return
-			return null;
-		}
+        if (isset($app->params['composer.callbacks'][$name])) {
+            $commands = $app->params['composer.callbacks'][$name];
+            foreach ($commands as $command) {
+                $args = explode(' ', $command);
+                $app->commandRunner->addCommands(\Yii::getPathOfAlias('application.cli.commands'));
+                $app->commandRunner->addCommands(\Yii::getPathOfAlias('system.cli.commands'));
+                $app->commandRunner->run($args);
+            }
+        }
+    }
 
-		require_once(Config::value('yii.path') . '/yii.php');
+    /**
+     * Creates console application, if Yii is available
+     */
+    private static function getYiiApplication()
+    {
+        if (!is_file(Config::value('yii.path') . '/yii.php')) {
+            // nothing yet installed, return
+            return null;
+        }
 
-		spl_autoload_register(array('YiiBase', 'autoload'));
+        require_once(Config::value('yii.path') . '/yii.php');
 
-		if (\Yii::app() === null)
-		{
+        spl_autoload_register(array('YiiBase', 'autoload'));
 
-			if (!Config::value('envlock'))
-			{
-				$env = Console::prompt('Please, enter your environment -ie. "dev | prod | stage": ', array('default' => 'dev'));
-				Initializer::buildEnvironmentFiles($env);
-			} else
-			{
-				Console::output("\n%Benv.lock%n file found. No environment request required.\n");
-				Console::output("Note: if you wish to re-do enviroment setting merging, please remove the %Benv.lock%n file " .
-					"from the Yiinitializr %Bconfig%n folder.");
-			}
+        if (\Yii::app() === null) {
 
-			Initializer::createRuntimeFolders();
+            if (!Config::value('envlock')) {
+                $env = Console::prompt('Please, enter your environment -ie. "dev | prod | stage": ', array('default' => 'dev'));
+                Initializer::buildEnvironmentFiles($env);
+            } else {
+                Console::output("\n%Benv.lock%n file found. No environment request required.\n");
+                Console::output("Note: if you wish to re-do enviroment setting merging, please remove the %Benv.lock%n file " .
+                        "from the Yiinitializr %Bconfig%n folder.");
+            }
 
-			Initializer::createRuntimeFolders('assets');
+            Initializer::createRuntimeFolders();
 
-			if (is_file(Config::value('yiinitializr.config.console')))
-				$app = \Yii::createConsoleApplication(Config::value('yiinitializr.config.console'));
-			else
-				throw new \Exception("'yiinitializr.config.console' setting not found");
+            Initializer::createRuntimeFolders('assets');
 
-		} else
-		{
-			$app = \Yii::app();
-		}
-		return $app;
-	}
+            if (is_file(Config::value('yiinitializr.config.console')))
+                $app = \Yii::createConsoleApplication(Config::value('yiinitializr.config.console'));
+            else
+                throw new \Exception("'yiinitializr.config.console' setting not found");
+        } else {
+            $app = \Yii::app();
+        }
+        return $app;
+    }
 }
