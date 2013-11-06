@@ -9,7 +9,7 @@ class m130713_214908_create_admin_user_and_base_auth_items extends CDbMigration
         $this->createUser(array(
             'username' => 'admin',
             'password' => 'admin',
-            'email' => 'admin@localhost',
+            'email' => 'admin@example.com',
             'role' => 'admin',
         ));
     }
